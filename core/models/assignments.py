@@ -79,6 +79,17 @@ class Assignment(db.Model):
         assertions.assert_found(assignment, 'No assignment with this id was found')
         assertions.assert_valid(grade is not None, 'assignment with empty grade cannot be graded')
 
+        assertions.assert_valid(
+            assignment.teacher_id == auth_principal.teacher_id
+            or auth_principal.principal_id is not None,
+            "This assignment is not submitted to you",
+            )
+        assertions.assert_valid(
+            assignment.state == AssignmentStateEnum.SUBMITTED
+            or assignment.state == AssignmentStateEnum.GRADED,
+            "assignment must be submitted before grading",
+            )
+
         assignment.grade = grade
         assignment.state = AssignmentStateEnum.GRADED
         db.session.flush()
