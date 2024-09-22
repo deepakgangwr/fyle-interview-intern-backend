@@ -56,3 +56,9 @@ pytest -vvv -s tests/
 # pytest --cov
 # open htmlcov/index.html
 ```
+### Coverage Report
+
+```
+pytest -vvv --cov --cov-report=html:html_report -s tests/
+open html_report/index.html
+```
